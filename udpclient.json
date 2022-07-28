@@ -2,5 +2,9 @@
     "socket": {
         "Host": "localhost",
         "Port": 14514
+    },
+    "Font": {
+        "Name": "等线",
+        "Size": 17
     }
 }

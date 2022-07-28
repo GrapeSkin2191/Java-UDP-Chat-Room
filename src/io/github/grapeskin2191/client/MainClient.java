@@ -16,6 +16,8 @@ public class MainClient {
     static InetSocketAddress serverAddress;
     static DatagramSocket socket;
     static Logger logger;
+    static String fontName;
+    static int fontSize;
 
     /**
      * 获取服务端的日志器
@@ -55,10 +57,9 @@ public class MainClient {
     /**
      * 初始化socket对象
      * @param logger 日志器，用于输出日志
-     * @return 配置好的socket对象
      */
-    private static DatagramSocket socketInit(Logger logger) {
-        logger.info("加载socket配置中");
+    private static void init(Logger logger) {
+        logger.info("加载配置中");
         try (FileReader fis = new FileReader("udpclient.json");
              BufferedReader bis = new BufferedReader(fis)){
             StringBuilder sb = new StringBuilder();
@@ -68,16 +69,21 @@ public class MainClient {
                 line = bis.readLine();
             }
 
-            JSONObject jsonObject = new JSONObject(sb.toString()).getJSONObject("socket");
-            String HOST = jsonObject.getString("Host");
-            int PORT = jsonObject.getInt("Port");
-            serverAddress = new InetSocketAddress(InetAddress.getByName(HOST), PORT);
+            JSONObject jsonObject = new JSONObject(sb.toString());
 
-            return new DatagramSocket();
+            JSONObject socketObject = jsonObject.getJSONObject("socket");
+            String host = socketObject.getString("Host");
+            int port = socketObject.getInt("Port");
+            serverAddress = new InetSocketAddress(InetAddress.getByName(host), port);
+            socket =  new DatagramSocket();
+
+            JSONObject fontObject = jsonObject.getJSONObject("Font");
+            fontName = fontObject.getString("Name");
+            fontSize = fontObject.getInt("Size");
+
         } catch (Exception e) {
-            logger.severe("读取socket配置失败，请检查配置信息。错误信息：" + e);
+            logger.severe("读取配置失败，请检查配置信息。错误信息：" + e);
             System.exit(0);
-            return null;
         }
     }
 
@@ -88,7 +94,7 @@ public class MainClient {
     public static void main(String[] args) {
         logger = getLogger();
         logger.info("客户端启动...");
-        socket =  socketInit(logger);
+        init(logger);
 
         Thread receiveThread = new Thread(MainClient::receiveThread);
 
@@ -123,7 +129,7 @@ public class MainClient {
     private static void failToConnect(Exception e) {
         logger.severe("连接服务器失败。" + (e == null ? "" : "错误信息：" + e));
         JLabel label = new JLabel("连接服务器失败");
-        label.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+        label.setFont(new Font(fontName, Font.PLAIN, fontSize));
         JOptionPane.showMessageDialog(null, label, "错误", JOptionPane.ERROR_MESSAGE);
         System.exit(0);
     }

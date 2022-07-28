@@ -35,7 +35,7 @@ public class ChatFrame extends JFrame{
         chat_ta.setLineWrap(true);
         chat_ta.setWrapStyleWord(true);
         chat_ta.setEditable(false);
-        chat_ta.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+        chat_ta.setFont(new Font(fontName, Font.PLAIN, fontSize));
         JScrollPane sp = new JScrollPane(chat_ta);
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
         c.weighty = 9;
@@ -51,7 +51,7 @@ public class ChatFrame extends JFrame{
 
         // 名称输入框
         name_tf = new JTextField(10);
-        name_tf.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+        name_tf.setFont(new Font(fontName, Font.PLAIN, fontSize));
         name_tf.setText(String.format("用户%04d", (int) (Math.random() * 10000)));
         bc.weightx = 1;
         gridBag.addLayoutComponent(name_tf, bc);
@@ -61,7 +61,7 @@ public class ChatFrame extends JFrame{
         input_ta = new JTextArea(3, 50);
         input_ta.setLineWrap(true);
         input_ta.setWrapStyleWord(true);
-        input_ta.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+        input_ta.setFont(new Font(fontName, Font.PLAIN, fontSize));
         JScrollPane input_sp = new JScrollPane(input_ta);
         bc.gridx = 1;
         bc.weightx = 8;
@@ -71,7 +71,7 @@ public class ChatFrame extends JFrame{
 
         // 发送按钮
         JButton send_btn = new JButton("发送");
-        send_btn.setFont(new Font("微软雅黑", Font.PLAIN, 15));
+        send_btn.setFont(new Font(fontName, Font.PLAIN, fontSize));
         bc.gridx = 9;
         bc.weightx = 1;
         bc.insets = new Insets(0, 0, 0, 0);
